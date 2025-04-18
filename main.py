@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from models import ProductSuggestionRequest, ProductSuggestionFullResponse
 from logic import suggest_products_logic
@@ -14,6 +15,15 @@ app = FastAPI(
     title="Cadoz Smart Shopping Assistant",
     description="API لتوفير توصيات منتجات مخصصة بناءً على استفسارات المستخدمين.",
     version="1.0.0",
+)
+
+# إعداد CORS للسماح للواجهة الأمامية بالوصول للـ API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://www.elhoda-center.store"],  # يمكنك وضع رابط موقعك فقط هنا لزيادة الأمان
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # نموذج لفحص صحة السيرفر
